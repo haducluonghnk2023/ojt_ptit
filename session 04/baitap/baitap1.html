@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        label{
+            width: 100px;
+        }
+        .header{
+            gap: 8px;
+            display: flex;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h3>Thông tin học viên</h3>
+        <div class="register">
+            <div class="header">
+                <label for="">Họ và tên</label>
+                <input id="name"  type="text" placeholder="vui lòng nhập họ tên"><br>
+            </div>
+            <div id="nameError" style="color: red; display: none;" >
+                Tên không được để trống
+            </div>
+            <div class="header">
+                <label for="">Email</label>
+                <input id="email" type="email" placeholder="vui lòng nhập email"><br>
+            </div>
+            <div id="emailError"  style="color: red; display: none;" >
+                Email không được để trống
+            </div>
+            <div class="header">
+                <label for="">Số điện thoại</label>
+                <input  id="number" type="text"   placeholder="vui lòng nhập số điện thoại"><br>
+            </div>
+            <div id="numberError"  style="color: red; display: none;">
+                Số điện thoại không được để trống
+            </div>
+            <div class="header">
+                <label for="" >Quê quán</label>
+                <input  id="address" type="text"  placeholder="vui lòng nhập địa chỉ"><br>            
+            </div>
+            <div id="addressError"  style="color: red; display: none;">
+                Địa chỉ không được để trống
+            </div>
+            <label id="lab" for="">Giới tính</label>
+            <input checked type="radio" value="Nam" name="gender">Nam
+            <input  type="radio" value="Nữ" name="gender">Nữ
+            <input  type="radio" value="Khác" name="gender">Khác
+            <br>
+            <button type="reset" id="btn" onclick="save()" >Lưu lại </button>
+            
+            <br>
+            <label for="">Tìm kiếm học viên:</label>
+            <input id="cut" type="text">
+            <button  onclick="search()" >search</button>
+
+           </table>
+        </div>
+        
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Họ và tên</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Quê quán</th>
+                    <th>Giới tính</th>
+                    <th colspan="2">Hành động</th>
+                    <th><button onclick="sort()">(sắp xếp theo alphab)</button></th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <!-- <tr>
+                    <td>ID</td>
+                    <td>Họ và tên</td>
+                    <td>Email</td>
+                    <td>Số điện thoại</td>
+                    <td>Quê quán</td>
+                    <td>Giới tính</td>
+                    <td>Sửa</td>
+                    <td>Xóa</td>
+                </tr> -->
+            </tbody>
+        </table>
+        <script>
+            // ----------------------------------------------------------------
+            let students = JSON.parse(localStorage.getItem("students")) || [];
+            let flag  = -1;
+            let nameError = document.getElementById("nameError");
+            let emailError = document.getElementById("emailError");
+            let phoneNumberError = document.getElementById("numberError");
+            let addressError = document.getElementById("addressError");
+
+
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let number = document.getElementById("number").value;
+            let address = document.getElementById("address").value;
+            //chứa danh sách sinh viên
+            function save() {
+                name = document.getElementById("name").value;
+                email = document.getElementById("email").value;
+                number = document.getElementById("number").value;
+                address = document.getElementById("address").value;
+                valueGender = "";
+                // console.log("name111111",name);
+                let checkBox = document.getElementsByName("gender");
+                for (let i = 0; i < checkBox.length; i++) {
+                    if(checkBox[i].checked === true){
+                        // console.log(checkBox[i].value);
+                        valueGender = checkBox[i].value;
+                    }
+                }
+                let obj = {
+                    id:Math.floor(Math.random() * 100000000),
+                    name:name,
+                    email:email,
+                    number:number,
+                    address:address,
+                    gender:valueGender,
+                }; 
+                validate();
+                clearInput();
+                // kiểm tra flag nếu flag == -1 thì người dùng muốn add còn !== -1 thì người dùng muốn sửa
+                if(flag != -1){
+                    // tức là muốn sửa
+                    // tìm vị trí của user
+                    for (let i = 0; i < students.length; i++) {
+                        if(students[i].id == flag){
+                            students.splice(i, 1, {...obj,id:flag});
+                            localStorage.setItem("students", JSON.stringify(students));
+                            document.getElementById("btn").innerText = "lưu";
+                            flag = -1;
+                            render();
+                            return;
+                        }
+                    }
+                }
+                    
+              
+                if(nameError.style.display == "none" && emailError.style.display == "none" && numberError.style.display == "none" && addressError.style.display == "none"){
+                    students.push(obj);
+                    render();
+                    clearInput();
+                }
+
+            }
+           
+            function clearInput(){
+                document.getElementById("name").value=""
+                document.getElementById("email").value=""
+                document.getElementById("number").value=""
+                document.getElementById("address").value=""
+            }
+            
+
+            function sort(){
+                for (let i = 0; i < students.length; i++) {
+                        for (let j = 0; j < students.length - 1; j++) {
+                            if (students[j].name > students[j + 1].name) {
+                                let temp = students[j];
+                                students[j] = students[j + 1];
+                                students[j + 1] = temp;
+                            }
+                        }
+                }
+                render();
+            }
+
+            function validate(){
+                if(name === ""){
+                    nameError.style.display="block";
+                } else if(name !== ""){
+                    nameError.style.display="none";
+                }
+                if(email === ""){
+                    emailError.style.display="block";
+                }else {
+                    emailError.style.display="none";
+                }
+                if(number === ""){
+                    phoneNumberError.style.display="block";
+                }else {
+                    phoneNumberError.style.display="none";
+                }
+                if(address === ""){
+                    addressError.style.display="block";
+                }else {
+                    addressError.style.display="none";
+                }
+            }
+            
+            // tạo hàm để đi render hiển thị
+            // lưu lại trên local
+
+            function render(){
+                let text = "";
+                for (let i = 0; i < students.length; i++) {
+                        text +=
+                            `
+                            
+                                <tr>    
+                                    <td>${i+1}</td>
+                                    <td>${students[i].name}</td>
+                                    <td>${students[i].email}</td>
+                                    <td>${students[i].number}</td>
+                                    <td>${students[i].address}</td>
+                                    <td>${students[i].gender}</td>
+                                    <td>
+                                        <button onclick="update(${students[i].id})">Sửa</button>
+                                    </td>
+                                    <td>
+                                        <button onclick="remove(${students[i].id})">Xóa</button>
+                                    </td>
+                                    
+                                </tr>
+                            `
+                        ;
+                }
+                document.getElementById("tbody").innerHTML = text;
+                localStorage.setItem("students", JSON.stringify(students));
+            }
+            render();
+  
+            function remove(idUser){
+                //quay về bài toán đi xóa user trong listuser
+                let confirmDelete = confirm("bạn có muốn xóa hay không");
+                if(!confirmDelete){
+                    return;
+                }
+                // viết logic xóa
+                for (let i = 0; i < students.length; i++) {
+                    if(students[i].id === idUser){
+                        // lấy ra vị trí
+                        console.log(students[i].id);
+                        students.splice(i,1);
+                        render();
+                        // gọi lại hàm render
+                        break;
+                    }
+                }
+            }
+
+
+            function update(idUser){
+                document.getElementById("btn").innerText = "Edit";
+                //làm sao phan biệt được khi nào edit khi nào add
+                // giải quyết đặt 1 cái cờ để xem khi nào muốn add khi nào muốn sửa
+                flag = idUser;
+            }
+            render();
+            
+            function search(){
+                let data = [];
+                for (let i = 0; i < students.length; i++) {
+                    if( students[i].name.includes(cut.value) === true){
+                       data.push( students[i]);
+                    }
+                } 
+                let text = "";
+                for (let i = 0; i < data.length; i++) {
+                        text +=
+                            `
+                            
+                                <tr>    
+                                    <td>${i+1}</td>
+                                    <td>${data[i].name}</td>
+                                    <td>${data[i].email}</td>
+                                    <td>${data[i].number}</td>
+                                    <td>${data[i].address}</td>
+                                    <td>${data[i].gender}</td>
+                                    <td>
+                                        <button onclick="update(${data[i].id})">Sửa</button>
+                                    </td>
+                                    <td>
+                                        <button onclick="remove(${data[i].id})">Xóa</button>
+                                    </td>
+                                    
+                                </tr>
+                            `
+                        ;
+                }
+                document.getElementById("tbody").innerHTML = text;    
+            }
+            
+        </script>
+</body> 
+</html>

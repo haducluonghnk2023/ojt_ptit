@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+       Object : Đối tượng
+        I. Cách khởi tạo đối tượng
+         1.let obj = {
+            name: 'kithu',
+            age: 25,
+            address: 'Hà Nội'
+         }
+         2. let newObj = new Object();
+         3. Dùng hàm tạo constructor
+         4. Dùng class 
+         II. thuộc kiểu dữ liệu phức tạp(reference type )
+         - một object sẽ gồm các cặp key ( thuộc tính - properties ) và value
+         - CRUD với object
+         - 1C : Create
+         Cách thêm thuộc tính cho đối tượng
+         Đối tượng.tên thuộc tính = "giá trị"; 
+         -2C : Read
+         có thể dùng for-in
+         -3C : Update
+         -4C : Delete
+         III.Tham chiếu - tham trị
+
+     -->
+    <script>
+        // let students = {
+        //     name: 'hoa',
+        //     address :'Hà Nội',
+        //     id : 1,
+        // }
+        // // students.address = 'Hà Nội';
+        // // students.id = 1;
+        // // for (const key in students) {
+        // //     console.log(students[key]);
+        // // }
+        // // students.name = 'hồng';
+        // delete students.address;
+        // console.log(students);
+
+        //tham chiếu
+        let a = 5;
+        let b = a;
+        a = 15;
+        console.log(a);
+        // kiểu tham trị- áp dụng với kiểu dữ liệu đơn giản
+        // let obj1 = {
+        //     name: "a"   
+        // }
+        // let obj2 = obj1;
+        // obj1.name = "b";
+        // console.log(obj2.name);
+        // kiểu tham chiếu-áp dụng với kiểu dữ liệu phức tạp
+        // Cách colone object
+        // Toán tử spread( shallow colone - colone nông(tức là  0 hết))
+        // deep colone(JSON.parse(JSON.stringify());
+        let obj1 = {
+            name: "a",
+            address:{
+                city:"HN"
+            }
+        }
+        // let obj2 = {...obj1};
+        let obj2 = JSON.parse(JSON.stringify(obj1));
+        // tạo ra 1 địa chỉ ô nhớ mới
+        obj1.name = "b";
+        obj1.address.city = "TP";
+        console.log(obj2.name);
+        console.log(obj2.address.city);
+    </script>
+</body>
+</html>

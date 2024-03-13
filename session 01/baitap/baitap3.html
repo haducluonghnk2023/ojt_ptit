@@ -1,0 +1,24 @@
+<!-- viết ct nhập vào 1 số nguyên dương n(n<=100).Hãy in ra bảng có số dòng,mỗi dòng in n số nguyên liên tiếp bắt đầu từ số i -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bảng Số Nguyên</title>
+</head>
+<body>
+    <script>
+        let n;
+        do {
+            n = prompt("nhập số nguyên dương");
+        }while(isNaN(n) || n <= 0 || n>100);
+        for(let i = 1; i <= n; i++) {
+            let b = " ";
+            for(let j = i; j < i+n; j++) {
+                b += j + " ";
+            }
+            console.log(b);
+        }
+    </script>
+</body>
+</html>

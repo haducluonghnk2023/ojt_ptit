@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .main{
+            width: 500px;
+            height: 300px;
+            margin: 0 auto;
+        }
+        .main .header{
+            width: 500px;
+            height: 250px;
+        }
+        .main .header img{
+            width: 100%;
+            height: 100%;
+        }
+        .footer {
+            height: 100px;
+        }
+        .footer ul{
+            display: flex;
+            width: 500px;
+            height: 50px;
+            gap: 5px;
+            list-style: none;
+            
+        }
+        .footer ul li img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .img {
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+            transition: opacity 0.3s ease;
+        } 
+        .opacity{
+            opacity: 0.5;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="header">
+            <img id="main-image" src="../images/anh 1.jpg" alt="">
+        </div>
+        <div class="footer">
+            <ul id="images">
+                PRE
+                NEXT
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        //tạo function render list ảnh
+        let images = ["../images/anh 2.jpg", "../images/anh 3.jpg", "../images/anh 4.jpg"," ../images/anh5.jpg", "../images/anh 6.jpg", "../images/anh5.jpg", "../images/anh 2.jpg"];
+        function renderImages(){
+            let text  ="";
+            for(let i = 0; i < images.length; i++){
+                if (i !== 3) {
+                    text +=
+                    `
+                    <li class = "img">
+                        <img class="opacity" src="${images[i]}" alt="">
+                    </li>
+                    `
+                ;
+                    continue;
+                // } else {
+                //     text +=
+                //     `
+                //     <li class = "img">
+                //         <img src="${images[i]}" alt="">
+                //     </li>
+                //     `
+                // ;
+                }
+                
+                text +=
+                    `
+                    <li>
+                        <img class = "image" src="${images[i]}" alt="">
+                    </li>
+                `;
+            }
+            let element = document.getElementById("images");
+            element.innerHTML =
+                ` 
+                    <button>PRE</button> ${text} <button onclick="nextImage()">NEXT</button>
+                `
+            ;
+        }
+        renderImages();
+        function nextImage(){
+            let result = images.pop();
+            images.unshift(result);
+            document.getElementById("main-image").src = images[3];
+            renderImages();
+        }
+    </script>
+</body>
+</html> 

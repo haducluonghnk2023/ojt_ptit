@@ -1,0 +1,26 @@
+<!-- viết chương trình nhập vào 1 câu bất kì,in ra câu đảo ngược của nó -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>baitap1</title>
+</head>
+<body>
+    <script>
+        // function daoNguoc(cau) {
+        //     return cau.split('').reverse().join('');
+        // }
+        // let cauVao = prompt("Nhập vào một câu bất kì: ");
+        // let cauDaoNguoc = daoNguoc(cauVao);
+        // console.log("Câu đảo ngược là:", cauDaoNguoc);
+
+        let a = "hello world";
+        let b = " ";
+        for (let i = a.length - 1; i >= 0; i--){
+            b += a[i];
+        }
+        console.log(b);
+    </script>
+</body>
+</html>
